@@ -37,13 +37,17 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/builds \
-	$(LOCAL_PATH)/include
+	$(LOCAL_PATH)/include \
+	external/libpng \
+	external/zlib
 
 LOCAL_CFLAGS += -W -Wall
 LOCAL_CFLAGS += -fPIC -DPIC
 LOCAL_CFLAGS += "-DDARWIN_NO_CARBON"
 LOCAL_CFLAGS += "-DFT2_BUILD_LIBRARY"
 LOCAL_CFLAGS += -fno-strict-aliasing
+
+LOCAL_SHARED_LIBRARIES += libpng libz
 
 # the following is for testing only, and should not be used in final builds
 # of the product
@@ -61,5 +65,5 @@ endif
 
 LOCAL_MODULE:= libft2
 
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 endif
