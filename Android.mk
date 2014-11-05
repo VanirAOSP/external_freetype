@@ -46,6 +46,7 @@ LOCAL_CFLAGS += -W -Wall
 LOCAL_CFLAGS += -fPIC -DPIC
 LOCAL_CFLAGS += "-DDARWIN_NO_CARBON"
 LOCAL_CFLAGS += "-DFT2_BUILD_LIBRARY"
+LOCAL_CFLAGS += -fno-strict-aliasing
 
 LOCAL_SHARED_LIBRARIES += libpng libz
 
@@ -53,7 +54,15 @@ LOCAL_SHARED_LIBRARIES += libpng libz
 # of the product
 #LOCAL_CFLAGS += "-DTT_CONFIG_OPTION_BYTECODE_INTERPRETER"
 
+# Freetype can't be built without optimizations, so we enforce -O2 if no
+# other optimization flag is set - but we don't override what the global
+# flags are saying if something else is given (-Os or -O3 are useful)
+ifeq ($(findstring -O, $(TARGET_GLOBAL_CFLAGS)),)
 LOCAL_CFLAGS += -O2
+endif
+ifneq ($(findstring -O0, $(TARGET_GLOBAL_CFLAGS)),)
+LOCAL_CFLAGS += -O2
+endif
 
 LOCAL_MODULE:= libft2
 
